@@ -1,7 +1,10 @@
 import express from "express";
 import User from './db.js'
+import cors from 'cors'
 const app = express();
 app.use(express.json())
+app.use(cors())
+
 app.post('/api',async function(req,res){
   const name=req.body.name
   const symbol=req.body.symbol
