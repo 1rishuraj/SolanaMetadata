@@ -3,16 +3,30 @@ import User from './db.js'
 import cors from 'cors'
 const app = express();
 app.use(express.json())
-// CORS Configuration
-const corsOptions = {
-  origin: 'https://token-launcher-nine.vercel.app/', // Allow only this origin
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Specify allowed methods
-  allowedHeaders: ['Content-Type', 'Authorization'], // Specify allowed headers
-  credentials: true, // Allow credentials (if needed)
-};
 
-// Use CORS middleware with options
-app.use(cors(corsOptions));
+const allowedOrigins = [
+    'http://localhost:5173', 
+    'https://token-launcher-nine.vercel.app',
+    'https://token-launcher-rishu-rajs-projects-d80232cf.vercel.app',
+    'https://token-launcher-git-main-rishu-rajs-projects-d80232cf.vercel.app/'
+    // Add more allowed origins as necessary
+];
+// Middleware
+app.use(cors({
+    origin: function (origin, callback) {
+        // Allow requests with no origin (like mobile apps, curl requests)
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.includes(origin)) {
+            return callback(null, true);
+        } else {
+            return callback(new Error('Not allowed by CORS'));
+        }
+    },
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true // Allow credentials
+}));// allows only our frontend client localhost to access data from server running '/' etc endpoints. & blocks other website to access our endpoints data
+
 
 app.post('/api',async function(req,res){
   const name=req.body.name
