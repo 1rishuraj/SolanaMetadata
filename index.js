@@ -3,13 +3,22 @@ import User from './db.js'
 import cors from 'cors'
 const app = express();
 app.use(express.json())
-app.use(cors())
+// CORS Configuration
+const corsOptions = {
+  origin: 'http://localhost:5173', // Allow only this origin
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Specify allowed methods
+  allowedHeaders: ['Content-Type', 'Authorization'], // Specify allowed headers
+  credentials: true, // Allow credentials (if needed)
+};
+
+// Use CORS middleware with options
+app.use(cors(corsOptions));
 
 app.post('/api',async function(req,res){
   const name=req.body.name
   const symbol=req.body.symbol
   const description="Token Description"
-  const image=req.body.imgURL;
+  const image=req.body.image;
 
   const newUser=await User.create({
     name,symbol,description,image
