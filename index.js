@@ -12,22 +12,6 @@ const allowedOrigins = [
   'https://token-launcher-git-main-rishu-rajs-projects-d80232cf.vercel.app'
 ];
 
-// Handle preflight OPTIONS requests globally
-app.options('*', cors({
-  origin: function (origin, callback) {
-    if (!origin) return callback(null, true);
-    const normalizedOrigin = origin.replace(/\/$/, '');
-    if (allowedOrigins.includes(normalizedOrigin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true
-}));
-
 // Use CORS middleware for all other requests
 app.use(cors({
   origin: function (origin, callback) {
